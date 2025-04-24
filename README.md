@@ -80,7 +80,3 @@ Isso abrirá o navegador com o **Expo Developer Tools**. Aponte a câmera do cel
 - Se estiver em rede diferente (Wi-Fi vs dados), pode não funcionar o QR. Tente com `npx expo start --tunnel` se precisar.
 
 ---
-
-### 📄 Licença
-
-Este projeto está sob a licença MIT.
