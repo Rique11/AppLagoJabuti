@@ -11,7 +11,7 @@ export default function LoginScreen() {
     console.log('Login:', email, senha);
     // Aqui você colocaria a lógica de autenticação com Firebase
     // Ex: firebase.auth().signInWithEmailAndPassword(email, senha)
-    router.replace('/(tabs)'); // redireciona para tela principal
+    router.replace('/(drawer)'); // redireciona para tela principal
   };
 
   return (

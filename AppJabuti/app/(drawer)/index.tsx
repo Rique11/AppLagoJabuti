@@ -4,12 +4,7 @@ import 'react-native-gesture-handler';
 
 export default function Home() {
   return (
-    <ScrollView style={styles.container}>
-      <Image
-        source={require('../../assets/logo.png')} // substitua pela sua logo real
-        style={styles.logo}
-        resizeMode="contain"
-      />
+    <ScrollView style={styles.container}> 
 
       <Text style={styles.title}>Novidades</Text>
       <View style={styles.carouselPlaceholder}>

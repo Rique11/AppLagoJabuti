@@ -11,7 +11,7 @@ export default function RegisterScreen() {
     console.log('Cadastro:', email, senha);
     // Aqui você colocaria a lógica de criação de conta com Firebase
     // Ex: firebase.auth().createUserWithEmailAndPassword(email, senha)
-    router.replace('/(tabs)'); // redireciona após cadastro
+    router.replace('/(drawer)'); // redireciona após cadastro
   };
 
   return (
