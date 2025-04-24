@@ -1,50 +1,29 @@
-# Welcome to your Expo app 👋
+# 🌊 Lago Jaboti App
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+Aplicativo mobile informativo sobre o Lago Jaboti, desenvolvido com **React Native**, **Expo** e **TypeScript**.
 
-## Get started
+## 📱 Executando o app no seu celular
 
-1. Install dependencies
+Siga os passos abaixo para rodar o app usando o **Expo Go** no seu dispositivo Android ou iOS:
 
-   ```bash
-   npm install
-   ```
+---
 
-2. Start the app
+### ✅ 1. Pré-requisitos
 
-   ```bash
-    npx expo start
-   ```
+- **Node.js** instalado → [Baixar aqui](https://nodejs.org/)
+- **npm** (ou **yarn**) instalado
+- App **Expo Go** instalado no seu celular:
+  - [Play Store (Android)](https://play.google.com/store/apps/details?id=host.exp.exponent)
+  - [App Store (iOS)](https://apps.apple.com/app/expo-go/id982107779)
 
-In the output, you'll find options to open the app in a
+> ❗ **Você NÃO precisa instalar o `expo-cli` globalmente.** Tudo já está configurado no projeto!
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+---
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+### 🚀 2. Instalando dependências
 
-## Get a fresh project
-
-When you're ready, run:
+Clone o repositório:
 
 ```bash
-npm run reset-project
-```
-
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
-
-## Learn more
-
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+git clone https://github.com/seu-usuario/lago-jaboti-app.git
+cd lago-jaboti-app
