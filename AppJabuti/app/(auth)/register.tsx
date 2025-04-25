@@ -1,17 +1,22 @@
 import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../firebase"; // ou onde estiver o seu arquivo
 
 export default function RegisterScreen() {
   const router = useRouter();
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
-
-  const handleRegister = () => {
-    console.log('Cadastro:', email, senha);
-    // Aqui você colocaria a lógica de criação de conta com Firebase
-    // Ex: firebase.auth().createUserWithEmailAndPassword(email, senha)
-    router.replace('/(drawer)'); // redireciona após cadastro
+  
+  const handleRegister = async () =>  {
+    try {
+      const userCredential = await createUserWithEmailAndPassword(auth, email, senha);
+      console.log("Usuário criado:", userCredential.user);
+      router.replace("/(drawer)"); // redireciona após login
+    } catch (error: any) {
+      console.error("Erro ao criar conta:", error.message);
+    }
   };
 
   return (
