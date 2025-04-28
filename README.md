@@ -26,7 +26,7 @@ Siga os passos abaixo para rodar o app usando o **Expo Go** no seu dispositivo A
 Clone o repositório:
 
 ```bash
-git clone https://github.com/seu-usuario/lago-jaboti-app.git
+git clone https://github.com/Rique11/AppLagoJabuti.git
 cd lago-jaboti-app
 ```
 
