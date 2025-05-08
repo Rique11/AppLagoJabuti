@@ -1,5 +1,6 @@
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import HomeScreen from '../(drawer)/index'; // Verifique se o caminho está certo
+import AgendamentoScreen from '../(drawer)/AgendamentoScreen'; // Update the path to the correct location
 import { View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
@@ -16,7 +17,14 @@ function CustomDrawerContent({ navigation }: any) {
       <DrawerItem icon="map" label="Mapa do Lago" />
       <DrawerItem icon="image" label="Fotos do Lago" />
       <DrawerItem icon="lock-closed" label="Regras do Lago" />
-      <DrawerItem icon="calendar" label="Agendamento" />
+      
+      {/* Modifiquei a aba Agendamento para ser uma navegação */}
+      <DrawerItem 
+        icon="calendar" 
+        label="Agendamento" 
+        onPress={() => navigation.navigate('Agendamento')}
+      />
+      
       <DrawerItem icon="bar-chart" label="Avaliação do Lago" />
       <DrawerItem icon="call" label="Chame as Autoridades" />
       <DrawerItem icon="help-circle" label="FAQ" />
@@ -33,9 +41,9 @@ function CustomDrawerContent({ navigation }: any) {
   );
 }
 
-function DrawerItem({ icon, label }: { icon: any; label: string }) {
+function DrawerItem({ icon, label, onPress }: { icon: any; label: string, onPress?: () => void }) {
   return (
-    <TouchableOpacity style={styles.item}>
+    <TouchableOpacity style={styles.item} onPress={onPress}>
       <Ionicons name={icon} size={20} color="#fff" style={{ marginRight: 16 }} />
       <Text style={styles.label}>{label}</Text>
     </TouchableOpacity>
@@ -70,14 +78,18 @@ export default function DrawerNavigator() {
       })}
     >
       <Drawer.Screen
-        name="Home" // valor interno para a navegação
+        name="Home" 
         component={HomeScreen}
         options={{
-          title: '', // se estiver usando o título do header
+          title: '',
           drawerItemStyle: { height: 0 },
-          //drawerLabel: () => null
-
         }}
+      />
+      {/* Adicionei a nova tela de Agendamento */}
+      <Drawer.Screen 
+        name="Agendamento" 
+        component={AgendamentoScreen} 
+        options={{ title: 'Agendamento' }} 
       />
     </Drawer.Navigator>
   );
