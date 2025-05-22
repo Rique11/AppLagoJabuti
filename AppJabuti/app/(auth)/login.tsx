@@ -71,7 +71,7 @@ const styles = StyleSheet.create({
     shadowRadius: 1,
     elevation: 1, // sombra no Android
   },
-  button: { backgroundColor: '#007bff', padding: 14, borderRadius: 8 },
+  button: { backgroundColor: '#E0C200', padding: 14, borderRadius: 8 },
   buttonText: { color: '#fff', textAlign: 'center', fontWeight: 'bold' },
   link: { marginTop: 16, textAlign: 'center', color: '#007bff' }
 });
