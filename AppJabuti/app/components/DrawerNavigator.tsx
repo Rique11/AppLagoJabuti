@@ -4,6 +4,7 @@ import AgendamentoScreen from '../(drawer)/AgendamentoScreen'; // Update the pat
 import { View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
+import AutoridadesScreen from '../(drawer)/AutoridadesScreen'; // Certifique-se de que o caminho está correto
 const Drawer = createDrawerNavigator();
 
 function CustomDrawerContent({ navigation }: any) {
@@ -17,7 +18,6 @@ function CustomDrawerContent({ navigation }: any) {
       <DrawerItem icon="map" label="Mapa do Lago" />
       <DrawerItem icon="image" label="Fotos do Lago" />
       <DrawerItem icon="lock-closed" label="Regras do Lago" />
-      
       {/* Modifiquei a aba Agendamento para ser uma navegação */}
       <DrawerItem 
         icon="calendar" 
@@ -26,7 +26,11 @@ function CustomDrawerContent({ navigation }: any) {
       />
       
       <DrawerItem icon="bar-chart" label="Avaliação do Lago" />
-      <DrawerItem icon="call" label="Chame as Autoridades" />
+      <DrawerItem
+        icon ="call"
+        label = "Chame as Autoridades"
+        onPress={()=> navigation.navigate('ChameAutoridades')}
+        />
       <DrawerItem icon="help-circle" label="FAQ" />
 
       <View style={{ marginTop: 'auto', padding: 20 }}>
@@ -90,6 +94,12 @@ export default function DrawerNavigator() {
         name="Agendamento" 
         component={AgendamentoScreen} 
         options={{ title: 'Agendamento' }} 
+      />
+
+      <Drawer.Screen
+        name="ChameAutoridades"
+        component={AutoridadesScreen} // Substitua pelo componente correto
+        options={{ title: 'Chame as Autoridades' }}
       />
     </Drawer.Navigator>
   );
