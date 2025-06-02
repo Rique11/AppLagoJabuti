@@ -5,6 +5,7 @@ import { View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import AutoridadesScreen from '../(drawer)/AutoridadesScreen'; // Certifique-se de que o caminho está correto
+import MapaScreen from '../(drawer)/MapaScreen';
 const Drawer = createDrawerNavigator();
 
 function CustomDrawerContent({ navigation }: any) {
@@ -15,7 +16,11 @@ function CustomDrawerContent({ navigation }: any) {
         <Image source={require('../../assets/logo.png')} style={styles.logo} />
       </View>
       <DrawerItem icon="time" label="Horário de Funcionamento" /> 
-      <DrawerItem icon="map" label="Mapa do Lago" />
+      <DrawerItem 
+          icon="map" 
+          label="Mapa do Lago"
+          onPress={() => navigation.navigate('MapaDoLago')}
+        />
       <DrawerItem icon="image" label="Fotos do Lago" />
       <DrawerItem icon="lock-closed" label="Regras do Lago" />
       {/* Modifiquei a aba Agendamento para ser uma navegação */}
@@ -95,6 +100,11 @@ export default function DrawerNavigator() {
         component={AgendamentoScreen} 
         options={{ title: 'Agendamento' }} 
       />
+    <Drawer.Screen 
+      name="MapaDoLago" 
+      component={MapaScreen} 
+      options={{ title: 'Mapa do Lago' }} 
+    />
 
       <Drawer.Screen
         name="ChameAutoridades"
