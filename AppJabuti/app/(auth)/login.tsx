@@ -1,6 +1,6 @@
 import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image } from 'react-native';
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../firebase"; // ajuste o path se necessário
 
@@ -23,6 +23,18 @@ export default function LoginScreen() {
 
   return (
     <View style={styles.container}>
+
+      <View style={styles.header}>
+        <TouchableOpacity style={styles.backButton} onPress={() => router.back()}>
+          <Text style={styles.backText}>←</Text>
+        </TouchableOpacity>
+        <Image
+          source={require('../../assets/logoSemFundo.png')} // certifique-se de que a logo está aqui
+          style={styles.logo}
+          resizeMode="contain"
+        />
+      </View>
+
       <Text style={styles.title}>Entrar</Text>
 
       <TextInput
@@ -44,17 +56,53 @@ export default function LoginScreen() {
         <Text style={styles.buttonText}>Entrar</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity onPress={() => router.push('/(auth)/register')}>
-        <Text style={styles.link}>Criar conta</Text>
+      <TouchableOpacity  onPress={() => router.push('/(auth)/register')}>
+        <Text style={styles.linkCadastro}>Não tem conta? Cadastre-se aqui</Text>
       </TouchableOpacity>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: 24, justifyContent: 'center', backgroundColor: '#fff' },
-  title: { fontSize: 32, marginBottom: 24, textAlign: 'center', fontWeight: 'bold' },
+  container: {
+  flex: 1,
+  backgroundColor: '#fff',
+},
+
+form: {
+  flex: 1,
+  paddingHorizontal: 24,
+  paddingTop: 24,
+  justifyContent: 'center',
+},
+  header: {
+  flexDirection: 'row',
+  alignItems: 'center',
+  backgroundColor: '#FFE600',
+  height: 100,
+  paddingHorizontal: 16,
+  paddingTop: 10,
+  justifyContent: 'center',
+  position: 'relative',
+  width:'100%'
+},
+backButton: {
+  position: 'absolute',
+  left: 16,
+  top: 50,
+},
+backText: {
+  fontSize: 24,
+  color: '#000',
+},
+logo: {
+  height: 40,
+  resizeMode: 'contain',
+},
+  title: { fontSize: 32, marginBottom: 24, textAlign: 'center', fontWeight: 'bold', marginTop:90 },
   input: { 
+    width:'80%',
+    alignSelf:'center',
     borderWidth: 1, 
     borderColor: '#ccc', 
     padding: 12, 
@@ -71,7 +119,13 @@ const styles = StyleSheet.create({
     shadowRadius: 1,
     elevation: 1, // sombra no Android
   },
-  button: { backgroundColor: '#E0C200', padding: 14, borderRadius: 8 },
+  button: { backgroundColor: '#FFE600', padding: 14, borderRadius: 8, width:'70%', alignSelf:'center', marginTop:10 },
   buttonText: { color: '#fff', textAlign: 'center', fontWeight: 'bold' },
-  link: { marginTop: 16, textAlign: 'center', color: '#007bff' }
+    linkCadastro:{
+    fontSize:15,
+    marginTop:5,
+    color: '#888',
+    fontWeight: 'bold',
+    alignSelf:'center'
+  }
 });
