@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, StyleSheet, TouchableOpacity, Alert, ScrollView } from 'react-native';
 import { Calendar } from 'react-native-calendars';
 import { Picker } from '@react-native-picker/picker';
+import { criarReserva, listarReservas } from "../../services/reservasService";
 
 const AgendamentoScreen = () => {
     const [dataSelecionada, setDataSelecionada] = useState('');
@@ -9,19 +10,63 @@ const AgendamentoScreen = () => {
     const [atividade, setAtividade] = useState('');
     const [nome, setNome] = useState('');
     const [telefone, setTelefone] = useState('');
+    const [horariosReservados, setHorariosReservados] = useState<string[]>([]);
 
-    const handleAgendar = () => {
+    const horariosDisponiveis = [
+        "08:00 - 09:00", "09:00 - 10:00", "10:00 - 11:00",
+        "14:00 - 15:00", "15:00 - 16:00", "16:00 - 17:00", "17:00 - 18:00"
+    ];
+
+    const buscarHorariosReservados = async (dia: string) => {
+        try {
+            const reservas = await listarReservas();
+            const diaFormatado = dia.split("-").reverse().join("/");
+
+            const ocupados = reservas
+                .filter((res: any) => res.dia === diaFormatado && res.quadra === "Quadra 1")
+                .map((res: any) => res.hora);
+
+            setHorariosReservados(ocupados);
+        } catch (error) {
+            Alert.alert("Erro", "Não foi possível carregar horários reservados");
+        }
+    };
+
+    const handleDiaSelecionado = (day: any) => {
+        setDataSelecionada(day.dateString);
+        buscarHorariosReservados(day.dateString);
+    };
+
+    const handleAgendar = async () => {
         if (!dataSelecionada || !hora || !atividade || !nome || !telefone) {
             Alert.alert('Campos obrigatórios', 'Por favor, preencha todos os campos.');
             return;
         }
 
-        Alert.alert('Agendado', `Agendamento realizado para ${dataSelecionada} às ${hora}.`);
-        setHora('');
-        setAtividade('');
-        setNome('');
-        setTelefone('');
-        setDataSelecionada('');
+        try {
+            const diaFormatado = dataSelecionada.split("-").reverse().join("/");
+
+            const resultado = await criarReserva({
+                dia: diaFormatado,
+                hora: hora,
+                quadra: "Quadra 1",
+                nomeAtividade: atividade,
+                seuNome: nome,
+                telefone: telefone,
+            });
+
+            Alert.alert("Agendamento Confirmado", `Agendado para ${dataSelecionada} às ${hora}.`);
+
+            setHora('');
+            setAtividade('');
+            setNome('');
+            setTelefone('');
+            setDataSelecionada('');
+            setHorariosReservados([]);
+        } catch (error: any) {
+            console.error("Erro ao agendar:", error.message);
+            Alert.alert("Erro", error.message || "Não foi possível agendar");
+        }
     };
 
     return (
@@ -30,7 +75,7 @@ const AgendamentoScreen = () => {
 
             <Calendar
                 style={styles.calendar}
-                onDayPress={(day) => setDataSelecionada(day.dateString)}
+                onDayPress={handleDiaSelecionado}
                 markedDates={{
                     [dataSelecionada]: { selected: true, marked: true, selectedColor: '#1a237e' },
                 }}
@@ -49,40 +94,25 @@ const AgendamentoScreen = () => {
                     style={styles.picker}
                 >
                     <Picker.Item label="Selecione um horário..." value="" />
-                    <Picker.Item label="08:00 - 09:00" value="08:00 - 09:00" />
-                    <Picker.Item label="09:00 - 10:00" value="09:00 - 10:00" />
-                    <Picker.Item label="10:00 - 11:00" value="10:00 - 11:00" />
-                    <Picker.Item label="14:00 - 15:00" value="14:00 - 15:00" />
-                    <Picker.Item label="15:00 - 16:00" value="15:00 - 16:00" />
-                    <Picker.Item label="16:00 - 17:00" value="16:00 - 17:00" />
-                    <Picker.Item label="17:00 - 18:00" value="17:00 - 18:00" />
+                    {horariosDisponiveis.map((h) => (
+                        <Picker.Item
+                            key={h}
+                            label={`${h}${horariosReservados.includes(h) ? " (indisponível)" : ""}`}
+                            value={h}
+                            enabled={!horariosReservados.includes(h)}
+                            color={horariosReservados.includes(h) ? "gray" : "black"}
+                        />
+                    ))}
                 </Picker>
             </View>
 
+            {/* Os demais campos seguem iguais */}
             <Text style={styles.label}>Atividade</Text>
-            <TextInput
-                style={styles.input}
-                placeholder="Ex. Jogo de futebol"
-                value={atividade}
-                onChangeText={setAtividade}
-            />
-
+            <TextInput style={styles.input} placeholder="Ex. Jogo de futebol" value={atividade} onChangeText={setAtividade} />
             <Text style={styles.label}>Seu nome</Text>
-            <TextInput
-                style={styles.input}
-                placeholder="Digite seu nome..."
-                value={nome}
-                onChangeText={setNome}
-            />
-
+            <TextInput style={styles.input} placeholder="Digite seu nome..." value={nome} onChangeText={setNome} />
             <Text style={styles.label}>Seu telefone</Text>
-            <TextInput
-                style={styles.input}
-                placeholder="(xx) xxxxx-xxxx"
-                keyboardType="phone-pad"
-                value={telefone}
-                onChangeText={setTelefone}
-            />
+            <TextInput style={styles.input} placeholder="(xx) xxxxx-xxxx" keyboardType="phone-pad" value={telefone} onChangeText={setTelefone} />
 
             <TouchableOpacity style={styles.sendButton} onPress={handleAgendar}>
                 <Text style={styles.sendButtonText}>Confirmar Agendamento</Text>
@@ -90,6 +120,7 @@ const AgendamentoScreen = () => {
         </ScrollView>
     );
 };
+
 
 const styles = StyleSheet.create({
     container: {

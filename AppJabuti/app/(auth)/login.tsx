@@ -3,6 +3,11 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image } from 'react-native';
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../firebase"; // ajuste o path se necessário
+import { login } from "../../services/autenticacaoService"; // ajuste o caminho conforme sua estrutura
+import * as SecureStore from "expo-secure-store";
+import { Alert } from "react-native"; // ou qualquer lib de toast/mensagem de erro
+import { Platform } from "react-native";
+import { storeItem } from '@/services/storage';
 
 
 export default function LoginScreen() {
@@ -12,12 +17,16 @@ export default function LoginScreen() {
 
   const handleLogin = async () => {
     try {
-      const userCredential = await signInWithEmailAndPassword(auth, email, senha);
-      console.log("Usuário logado:", userCredential.user);
-      router.replace("/(drawer)"); // redireciona após login
+      const response = await login(email, senha);
+      
+      console.log("Usuário logado via backend:", response);
+      await storeItem("userId", response.userId);
+      await storeItem("userEmail", response.email);
+
+      router.replace("/(drawer)"); // ou o caminho da sua home após login
     } catch (error: any) {
       console.error("Erro no login:", error.message);
-      // Aqui você pode mostrar um toast ou mensagem de erro pro usuário
+      Alert.alert("Erro no login", error.message); // ou use seu sistema de toast
     }
   };
 

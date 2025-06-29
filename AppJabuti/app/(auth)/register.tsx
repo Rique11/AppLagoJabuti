@@ -1,10 +1,8 @@
 import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image } from 'react-native';
-import { createUserWithEmailAndPassword } from "firebase/auth";
-import { auth } from "../firebase"; // ou onde estiver o seu arquivo
-import MaterialIcons from '@expo/vector-icons/MaterialIcons'
-import FontAwesome5 from '@expo/vector-icons/FontAwesome5'
+import { register } from "../../services/autenticacaoService"; // ajuste o caminho
+import { Alert } from "react-native";
 
 export default function RegisterScreen() {
   const router = useRouter();
@@ -12,20 +10,23 @@ export default function RegisterScreen() {
   const [senha, setSenha] = useState('');
   const [confirmarSenha, setConfirmaSenha] = useState('');
   const [cpf, setCPF] = useState('');
-  const handleRegister = async () =>  {
-      if (senha !== confirmarSenha) {
-    alert("As senhas não coincidem.");
-    return;
-    }
-    try {
-      const userCredential = await createUserWithEmailAndPassword(auth, email, senha);
-      console.log("Usuário criado:", userCredential.user);
-      router.replace("/(drawer)"); // redireciona após login
-    } catch (error: any) {
-      console.error("Erro ao criar conta:", error.message);
-    }
-  };
 
+const handleRegister = async () => {
+  if (senha !== confirmarSenha) {
+    Alert.alert("Erro", "As senhas não coincidem.");
+    return;
+  }
+
+  try {
+    const response = await register(email, senha, cpf);
+    console.log("Usuário registrado:", response);
+
+    router.replace("/(drawer)");
+  } catch (error: any) {
+    console.error("Erro ao criar conta:", error.message);
+    Alert.alert("Erro no registro", error.message);
+  }
+};
   return (
     <View style={styles.container}>
       <View style={styles.header}>

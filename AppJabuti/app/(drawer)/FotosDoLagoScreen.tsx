@@ -14,21 +14,7 @@ export default function FotosDoLagoScreen() {
   const [isWebPhotoAlbumLoaded, setIsWebPhotoAlbumLoaded] = useState(false);
 
   useEffect(() => {
-    if (Platform.OS === 'web') {
-      // Use dynamic import here, inside useEffect, so it's not evaluated at bundle time for native
-      import('react-photo-album').then((module) => {
-        RowsPhotoAlbumComponent = module.RowsPhotoAlbum; // Assign to the shared variable
-        // Dynamically require CSS (still web-only)
-        try {
-          require('react-photo-album/rows.css'); 
-        } catch (e) {
-          console.warn("Could not load react-photo-album/rows.css. This is expected on non-web platforms.", e);
-        }
         setIsWebPhotoAlbumLoaded(true);
-      }).catch((error) => {
-        console.error("Failed to load react-photo-album on web:", error);
-      });
-    }
   }, []);
 
   if (Platform.OS === 'web') {

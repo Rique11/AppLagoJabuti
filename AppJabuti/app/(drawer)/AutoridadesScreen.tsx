@@ -3,6 +3,8 @@ import {
     View, Text, TextInput, Button, StyleSheet, TouchableOpacity, Image, Alert, ScrollView
 } from 'react-native';
 import * as Linking from 'expo-linking';
+import { registrarAvistamento } from '@/services/avistamentoService';
+
 
 export default function AutoridadesScreen() {
     const [descricao, setDescricao] = useState('');
@@ -22,14 +24,30 @@ export default function AutoridadesScreen() {
         Linking.openURL('tel:190');
     };
 
-    const handleSend = () => {
-        if (!confirmado) {
-            Alert.alert('Confirmação necessária', 'Você deve confirmar que a situação requer intervenção.');
-            return;
-        }
+    const handleSend = async () => {
+    if (!confirmado) {
+        Alert.alert('Confirmação necessária', 'Você deve confirmar que a situação requer intervenção.');
+        return;
+    }
 
-        // Simulação de envio
+    try {
+        const dataAtual = new Date();
+        const data = dataAtual.toLocaleDateString("pt-BR");
+        const horario = dataAtual.toLocaleTimeString("pt-BR", { hour: '2-digit', minute: '2-digit' });
+
+        await registrarAvistamento({
+        descricao,
+        local,
+        data,
+        horario,
+        suspeito: aparencia,
+        nomeRelator: nome,
+        telefone,
+        fotoUrl: photo || undefined,
+        });
+
         Alert.alert('Enviado', 'Sua mensagem foi enviada para as autoridades.');
+
         setDescricao('');
         setLocal('');
         setAparencia('');
@@ -37,8 +55,12 @@ export default function AutoridadesScreen() {
         setTelefone('');
         setPhoto(null);
         setConfirmado(false);
-    };
 
+    } catch (error: any) {
+        console.error("Erro ao registrar:", error);
+        Alert.alert("Erro", error.message || "Erro ao enviar avistamento.");
+    }
+    };
     return (
         <ScrollView style={styles.container}>
             <Text style={styles.title}>Chame as Autoridades</Text>
