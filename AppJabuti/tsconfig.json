@@ -1,17 +1,20 @@
 {
-"extends": "./node_modules/expo/tsconfig.base",
+  "extends": "./node_modules/expo/tsconfig.base",
   "compilerOptions": {
     "strict": true,
     "paths": {
       "@/*": [
         "./*"
       ]
-    }
+    },
+    "module": "esnext"
   },
   "include": [
     "**/*.ts",
     "**/*.tsx",
     ".expo/types/**/*.ts",
-    "expo-env.d.ts"
-, "app/(auth)/login.tsx", "app/(auth)/register.jsx"  ]
+    "expo-env.d.ts",
+    "app/(auth)/login.tsx",
+    "app/(auth)/register.jsx"
+  ]
 }
