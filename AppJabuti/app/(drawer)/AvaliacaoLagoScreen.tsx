@@ -142,7 +142,7 @@ const styles = StyleSheet.create({
     width: '100%',
     height: 'auto', // Ajusta a altura automaticamente
     minHeight: 400, // Altura mínima para o widget ser visível
-    border: 'none',
+    //border: 'none',
     backgroundColor: '#f0f0f0',
   },
   loadingOverlay: {

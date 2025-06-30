@@ -12,7 +12,9 @@ app.use(cors()); //PARA DEV TIRAR ANTES DE PROD
 // Se quiser restringir a uma origem específica:
 // app.use(cors({ origin: "http://localhost:8081" }));
 
-app.use(express.json());
+// Aumenta o limite do tamanho do body (para imagens base64, etc.)
+app.use(express.json({ limit: '10mb' }));
+app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 
 app.use("/api/reservas", reservasRouter);
 app.use("/api/autenticacao", autenticacaoRouter);

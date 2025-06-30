@@ -28,7 +28,7 @@ export default function HorarioFuncionamentoScreen() {
 
       <View style={styles.section}>
         <Ionicons name="information-circle-outline" size={24} color="#1a237e" style={styles.icon} />
-        <View>
+        <View  style={{ flex: 1 }}>
           <Text style={styles.sectionTitle}>Observações Importantes:</Text>
           <Text style={styles.text}>- O acesso ao lago fora do horário de funcionamento é restrito.</Text>
           <Text style={styles.text}>- Em caso de eventos especiais ou manutenção, os horários podem ser alterados com aviso prévio.</Text>
@@ -65,6 +65,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     borderWidth: 1,
     borderColor: '#eee',
+    
   },
   icon: {
     marginRight: 15,
@@ -78,13 +79,14 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 14,
+
     color: '#555',
     marginBottom: 3,
   },
   footerText: {
     fontSize: 13,
     color: '#666',
-    marginTop: 30,
+    marginTop: 10,
     fontStyle: 'italic',
     textAlign: 'center',
   },

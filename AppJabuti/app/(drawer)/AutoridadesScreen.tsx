@@ -4,6 +4,8 @@ import {
 } from 'react-native';
 import * as Linking from 'expo-linking';
 import { registrarAvistamento } from '@/services/avistamentoService';
+import * as ImagePicker from 'expo-image-picker';
+import { ActivityIndicator } from 'react-native';
 
 
 export default function AutoridadesScreen() {
@@ -14,11 +16,30 @@ export default function AutoridadesScreen() {
     const [telefone, setTelefone] = useState('');
     const [photo, setPhoto] = useState<string | null>(null);
     const [confirmado, setConfirmado] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
 
-    const pickImage = async () => {
-        Alert.alert('Função indisponível', 'O envio de fotos está desativado no momento.');
-        // Código comentado até a função estar ativa
-    };
+const pickImage = async () => {
+  // Pede permissão
+  const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
+
+  if (permissionResult.status !== 'granted') {
+    Alert.alert("Permissão necessária", "Você precisa permitir acesso à galeria.");
+    return;
+  }
+  const result = await ImagePicker.launchImageLibraryAsync({
+    mediaTypes: ImagePicker.MediaTypeOptions.Images,
+    allowsEditing: true,
+    quality: 0.7,
+    base64: true, // <-- ISSO aqui é o que ativa o base64
+  });
+
+  if (!result.canceled && result.assets && result.assets.length > 0) {
+    const base64Image = result.assets[0].base64;
+    if (base64Image) {
+      setPhoto(`data:image/jpeg;base64,${base64Image}`);
+    }
+  }
+};
 
     const handleEmergencyCall = () => {
         Linking.openURL('tel:190');
@@ -29,6 +50,7 @@ export default function AutoridadesScreen() {
         Alert.alert('Confirmação necessária', 'Você deve confirmar que a situação requer intervenção.');
         return;
     }
+  setIsLoading(true); // Ativa o loading
 
     try {
         const dataAtual = new Date();
@@ -59,6 +81,8 @@ export default function AutoridadesScreen() {
     } catch (error: any) {
         console.error("Erro ao registrar:", error);
         Alert.alert("Erro", error.message || "Erro ao enviar avistamento.");
+    }finally {
+        setIsLoading(false); // Desativa o loading
     }
     };
     return (
@@ -122,9 +146,13 @@ export default function AutoridadesScreen() {
                 </Text>
             </View>
 
-            <TouchableOpacity style={styles.sendButton} onPress={handleSend}>
-                <Text style={styles.sendButtonText}>Enviar avistamento</Text>
-            </TouchableOpacity>
+            {isLoading ? (
+                <ActivityIndicator size="large" color="#1a237e" style={{ marginVertical: 20 }} />
+            ) : (
+                <TouchableOpacity style={styles.sendButton} onPress={handleSend}>
+                    <Text style={styles.sendButtonText}>Enviar avistamento</Text>
+                </TouchableOpacity>
+            )}
 
             <Text style={styles.urgente}>! URGENTE !</Text>
             <TouchableOpacity style={styles.emergencyButton} onPress={handleEmergencyCall}>

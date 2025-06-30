@@ -19,8 +19,12 @@ const limparCamposUndefined = (obj) => {
 const registrarAvistamento = async (req, res) => {
   const { descricao, local, horario, data, suspeito, telefone, fotoUrl, nomeRelator } = req.body;
   const userId = req.user?.uid || "anônimo";
-
-  try {
+  //console.log(fotoUrl)
+  let base64Image = '';
+  if(fotoUrl){
+          base64Image = `data:image/jpeg;base64,${fotoUrl}`;
+  }
+    try {
         // Salvar no Firestore
     const dadosAvistamento = {
     userId,
@@ -50,7 +54,7 @@ const registrarAvistamento = async (req, res) => {
         <p><strong>Local:</strong> ${local}</p>
         <p><strong>Data:</strong> ${data} às ${horario}</p>
         <p><strong>Detalhes:</strong> ${suspeito}</p>
-        ${fotoUrl ? `<p><strong>Foto:</strong> <a href="${fotoUrl}">${fotoUrl}</a></p>` : ""}
+        ${fotoUrl ? `<p><strong>Foto:</strong><br><img src="data:image/jpeg;base64,${base64Image}" alt="Imagem do avistamento" style="max-width: 100%; height: auto;" /></p>` : ""}
         <p><strong>Usuário:</strong> ${nomeRelator}</p>
       `,
     };
